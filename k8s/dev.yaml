@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dev-pod
+spec:
+  containers:
+  - name: dev-container
+    image: "docker.m.daocloud.io/debian"
+    volumeMounts:
+    - name: dev-volume
+      mountPath: /app
+  volumes:
+  - name: dev-volume
+    hostPath:
+      path: {{path}}/server
