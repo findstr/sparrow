@@ -1,1 +1,3 @@
 k8s/volume
+client/out
+client/node_modules
