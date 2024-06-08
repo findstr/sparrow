@@ -30,14 +30,14 @@ spec:
       name: kvrocks
       labels:
         app: db-node
-    spec:   
+    spec:
       volumes:
         - name: local-storage
           persistentVolumeClaim:
             claimName: pvc-db
       initContainers:
         - name: init-db
-          image: "bitnami/etcd:latest"
+          image: "registry.cn-shanghai.aliyuncs.com/findstr-mirror/etcd:latest"
           env:
           - name: CLUSTER_SIZE
             value: "4"
@@ -54,23 +54,24 @@ spec:
           - |
              INDEX=${HOSTNAME##*-}
              while true; do
-               etcdctl --endpoints=http://etcd-gateway.${POD_NAMESPACE}.svc.cluster.local:2379 put /db/count $CLUSTER_SIZE
+               etcdctl --endpoints=http://etcd-gateway.${POD_NAMESPACE}.svc.cluster.local:2379 put /service/db/capacity $CLUSTER_SIZE
                if [ $? -eq 0 ]; then
                  echo "db update pod success"
                  break
                fi
              done
              while true; do
-               etcdctl --endpoints=http://etcd-gateway.${POD_NAMESPACE}.svc.cluster.local:2379 put /db/service INDEX ${HOSTNAME}.etcd:6666
+               echo "${INDEX}"
+               etcdctl --endpoints=http://etcd-gateway.${POD_NAMESPACE}.svc.cluster.local:2379 put /service/db/instance/${INDEX} ${HOSTNAME}.db.default.svc.cluster.local:6666
                if [ $? -eq 0 ]; then
                  echo "db update pod success"
                  break
                fi
              done
-             mkdir /var/run/${HOSTNAME}/
+             mkdir -p /var/run/${HOSTNAME}/
       containers:
       - name: kvrocks
-        image: "apache/kvrocks:latest"
+        image: "registry.cn-shanghai.aliyuncs.com/findstr-mirror/kvrocks:latest"
         ports:
         - containerPort: 6666
           name: client

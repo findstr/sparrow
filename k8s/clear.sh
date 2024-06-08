@@ -1,8 +1,8 @@
-#!/bin/sh
-kubectl delete --all sts
-kubectl delete --all pvc
-kubectl delete --all pv
-kubectl delete --all pod
-sudo rm -rf volume
-sudo mkdir -p volume
+#!/bin/bash
+minikube kubectl -- delete --all sts
+minikube kubectl -- delete --all pvc
+minikube kubectl -- delete --all pv
+minikube kubectl -- delete --all pod
+rm -rf volume/*
+
 

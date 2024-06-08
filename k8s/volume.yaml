@@ -21,7 +21,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /mnt/local/
+    path: /mnt/local/k8s/volume/
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -44,7 +44,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /mnt/local/
+    path: /mnt/local/k8s/volume/
   nodeAffinity:
     required:
       nodeSelectorTerms:

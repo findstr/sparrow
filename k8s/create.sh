@@ -1,5 +1,5 @@
 #!/bin/sh
-kubectl apply -f ./volume.yaml
-kubectl apply -f ./etcd.yaml
-kubectl apply -f ./db.yaml
-cat ./dev.yaml | sed s+{{path}}+$(dirname $(pwd))+g | kubectl apply -f -
+minikube kubectl -- apply -f ./volume.yaml
+minikube kubectl -- apply -f ./etcd.yaml
+minikube kubectl -- apply -f ./db.yaml
+minikube kubectl -- apply -f ./dev.yaml
