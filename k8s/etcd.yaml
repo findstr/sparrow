@@ -65,7 +65,7 @@ spec:
             claimName: pvc-etcd
       containers:
       - name: etcd
-        image: "bitnami/etcd:latest"
+        image: "registry.cn-shanghai.aliyuncs.com/findstr-mirror/etcd:latest"
         ports:
         - containerPort: 2379
           name: client

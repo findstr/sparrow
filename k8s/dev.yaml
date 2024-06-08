@@ -5,11 +5,15 @@ metadata:
 spec:
   containers:
   - name: dev-container
-    image: "docker.m.daocloud.io/debian"
+    image: "registry.cn-shanghai.aliyuncs.com/findstr-mirror/ubuntu:latest"
     volumeMounts:
     - name: dev-volume
       mountPath: /app
+    command:
+      - tail
+      - '-f'
+      - /dev/null
   volumes:
   - name: dev-volume
     hostPath:
-      path: {{path}}/server
+      path: /mnt/local/server

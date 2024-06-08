@@ -1,2 +1,2 @@
 #!/bin/sh
-kubectl exec -it dev-pod -- zsh
+minikube kubectl -- exec -it dev-pod -- bash -c "cd /app && /bin/bash"
