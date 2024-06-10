@@ -3,6 +3,7 @@ local core = require "core"
 local logger = require "core.logger"
 local websocket = require "core.websocket"
 local args = require "lib.args"
+local serverlist = require "lib.conf.serverlist"
 local db = require "lib.db"
 local proto = require "app.proto.gateway"
 local code = require "app.code"
@@ -31,6 +32,7 @@ local auth_r = typeid["auth_r"]
 local login_r = typeid["login_r"]
 local login_a = typeid["login_a"]
 local create_r = typeid["create_r"]
+local servers_r = typeid["servers_r"]
 local client_max = pb.enum("gateway.CMD", "client_max")
 local sock_to_account = {}
 local sock_to_user = {}
@@ -113,10 +115,22 @@ local function login_or_create(sock, cmd, dat)
 	return user:forward(cmd, dat)
 end
 
+local function servers(sock, _, _)
+	local account = sock_to_account[sock]
+	if not account then
+		logger.error("[gateway] login_r before auth")
+		sock:write(error_msg(login_a, code.auth_first))
+		return false
+	end
+	local list = serverlist.get()
+	local dat = encode("servers_a", {list = list})
+	sock:write(dat)
+end
+
 router[auth_r] = auth
 router[login_r] = login_or_create
 router[create_r] = login_or_create
-
+router[servers_r] = servers
 local function process(sock)
 	local dat, typ = sock:read()
 	if not dat then
